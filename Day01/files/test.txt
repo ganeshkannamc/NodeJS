@@ -1,0 +1,22 @@
+Learning node JS
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+got error - 
+Am being appened after the new content
+Am being appened after the new content
+Am being appened after the new content
+got error - 
+Am being appened after the new content
+got error - Error: ENOENT: no such file or directory, open 'D:\Besant\Classes\WD-Batch_24-Online\NodeJS\Day01\files\tet.txt'
+Am being appened after the new content
+got error - Error: ENOENT: no such file or directory, open 'D:\Besant\Classes\WD-Batch_24-Online\NodeJS\Day01\files\tet.txt'
+Am being appened after the new content
+got error - Error: ENOENT: no such file or directory, open 'D:\Besant\Classes\WD-Batch_24-Online\NodeJS\Day01\files\tet.txt'
+Am being appened after the new content
+got error - Error: ENOENT: no such file or directory, open 'D:\Besant\Classes\WD-Batch_24-Online\NodeJS\Day01\files\tet.txt'
