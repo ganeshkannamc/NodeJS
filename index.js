@@ -9,10 +9,51 @@ const http = require("http");
 
 const PORT = 5500;
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   console.log(req.url, req.method);
-  res.writeHead(201, { "Content-Type": "text/plain" });
-  res.end("ok");
+  // const readData = await fsPromise.readFile(
+  //   path.join(__dirname, "files", "test.txt"),
+  //   "utf8"
+  // );
+
+  // res.writeHead(200, { "Content-Type": "text/html" });
+  // res.write(readData);
+  // res.end();
+
+  if (req.url == "/") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write("<html><body><p>This is home page!</p></html>");
+    res.end();
+  }
+
+  if (req.url == "/employee") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write("<html><body><p>This is employee page!</p></html>");
+    res.end();
+  }
+
+  if (req.url == "/") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write("<html><body><p>This is home page!</p></html>");
+    res.end();
+  }
+
+  if (req.url == "/admin") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write("<html><body><p>This is admin page!</p></html>");
+    res.end();
+  }
+
+  if (req.url == "/data") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({ name: "Ganesh", age: 24 }));
+    res.end();
+  }
+
+  res.writeHead(400, { "Content-Type": "text/html" });
+  res.write("<html><body><p>Invalid routes</p></html>");
+
+  res.end();
 });
 
 server.listen(PORT, () => console.log("server started on 5500"));
@@ -46,7 +87,7 @@ const fileOperation = async () => {
     );
   }
 };
-fileOperation();
+// fileOperation();
 // fs.readFile(path.join(__dirname, "files", "test.txt"), "utf8", (err, data) => {
 //   if (err) throw err;
 //   // console.log(data.toString());
