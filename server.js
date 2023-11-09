@@ -1,27 +1,39 @@
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
+
+const { logger } = require("./middleware/logEvents");
+const { corsOptions } = require("./config/corsOptions");
 
 const app = express();
 
 const PORT = 5000;
 
-let userList = [];
+let userList = [""];
 
 // Middleware - The middleware in node. js is a function that will have all the access for requesting an object, responding to an object, and moving to the next middleware function in the application request-response cycle.
 app.use(express.json());
-
 // Custom middleware
-app.use((req, res, next) => {
-  console.log("Am printing from custom middleware", req.method);
-  req.check = { message: "The request is clean and validated" };
-  // return res.json({ message: "Am from middle ware" });
-  let isSanitized = true;
-  if (isSanitized) {
-    next();
-  } else {
-    return res.json({ Message: "This is not a human" });
-  }
-});
+app.use(logger);
+
+// CORS - Restricts client consumming our API. We can assgin clients who can access our API
+app.use(cors());
+app.use(cors(corsOptions));
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.path}`);
+//   next();
+// });
+// app.use((req, res, next) => {
+//   console.log("Am printing from custom middleware", req.method);
+//   req.check = { message: "The request is clean and validated" };
+//   // return res.json({ message: "Am from middle ware" });
+//   let isSanitized = true;
+//   if (isSanitized) {
+//     next();
+//   } else {
+//     return res.json({ Message: "This is not a human" });
+//   }
+// });
 
 // API routes
 app.get("/", (req, res) => {
@@ -70,6 +82,7 @@ app.post("/register", (req, res) => {
 //   "username":"ganesh",
 //   "password":"12344"
 // }
+
 app.post("/login", (req, res) => {
   let { username, password } = req.body;
   // Check if provided username and password matches with the record
