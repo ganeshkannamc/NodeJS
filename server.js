@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const { logger } = require("./middleware/logEvents");
 const { corsOptions } = require("./config/corsOptions");
@@ -9,8 +10,6 @@ const app = express();
 
 const PORT = 5000;
 
-let userList = [""];
-
 // Middleware - The middleware in node. js is a function that will have all the access for requesting an object, responding to an object, and moving to the next middleware function in the application request-response cycle.
 app.use(express.json());
 // Custom middleware
@@ -18,7 +17,67 @@ app.use(logger);
 
 // CORS - Restricts client consumming our API. We can assgin clients who can access our API
 app.use(cors());
-app.use(cors(corsOptions));
+
+// bcrypt
+// bcrypt.hash("gaensh", 5, function (err, encry) {
+//   if (err) return console.log("Error while password hash", err);
+//   console.log(encry);
+//   // bcrypt.compare("gaensh", hash, function (err, result) {
+//   //   if (err) return console.log("Error while password compare", err);
+//   //   console.log(result);
+//   //   // result == false
+//   // });
+// });
+
+// bcrypt.hash("gaensh", 5, function (err, hash) {
+//   if (err) return console.log("Error while password hash", err);
+//   console.log(hash);
+//   bcrypt.compare("gaensh", hash, function (err, result) {
+//     if (err) return console.log("Error while password compare", err);
+//     console.log(result);
+//     // result == false
+//   });
+// });
+
+// bcrypt.hash("gaensh", 5, function (err, hash) {
+//   if (err) return console.log("Error while password hash", err);
+//   console.log(hash);
+//   bcrypt.compare("gaensh", hash, function (err, result) {
+//     if (err) return console.log("Error while password compare", err);
+//     console.log(result);
+//     // result == false
+//   });
+// });
+
+// bcrypt.hash("gaensh", 5, function (err, hash) {
+//   if (err) return console.log("Error while password hash", err);
+//   console.log(hash);
+//   bcrypt.compare("Gaensh", hash, function (err, result) {
+//     if (err) return console.log("Error while password compare", err);
+//     console.log(result);
+//     // result == false
+//   });
+// });
+
+// API routes
+app.get("/", (req, res) => {
+  res.status(200);
+  return res.sendFile(path.join(__dirname, "views", "index.html"));
+});
+
+app.use("/register", require("./routes/register"));
+app.use("/login", require("./routes/auth"));
+
+app.use("/users", require("./routes/api/user"));
+
+app.all("*", (req, res) => {
+  res.status(404);
+  res.sendFile(path.join(__dirname, "views", "404.html"));
+});
+
+app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+
+// app.use(cors(corsOptions));
 // app.use((req, res, next) => {
 //   console.log(`${req.method} ${req.path}`);
 //   next();
@@ -34,12 +93,6 @@ app.use(cors(corsOptions));
 //     return res.json({ Message: "This is not a human" });
 //   }
 // });
-
-// API routes
-app.get("/", (req, res) => {
-  res.status(200);
-  return res.sendFile(path.join(__dirname, "views", "index.html"));
-});
 
 // app.use((req, res, next) => {
 //   console.log("Am printing from custom middleware", req.method);
@@ -58,50 +111,9 @@ app.get("/", (req, res) => {
 //   "username":"ganesh",
 //   "password":"12344"
 // }
-app.post("/register", (req, res) => {
-  // parse req.body
-  // console.log(req.body)
-  console.log(req.check);
-
-  let { username, password } = req.body;
-  // 1 - If user already registered
-  let checkIfRegistered = userList.find((user) => user?.username == username);
-  // 2 - If already registered then i will say already registered else create a new user.
-  if (checkIfRegistered) {
-    res.status(200);
-    return res.json({ message: "User already registered" });
-  } else {
-    userList = [...userList, { username: username, password: password }];
-    res.status(200);
-    return res.json({ message: `Success ${username}! Registered` });
-  }
-});
 
 // http://localhost:5000/login
 // {
 //   "username":"ganesh",
 //   "password":"12344"
 // }
-
-app.post("/login", (req, res) => {
-  let { username, password } = req.body;
-  // Check if provided username and password matches with the record
-  let checkIfValid = userList.find(
-    (user) => user?.username == username && user?.password == password
-  );
-  // If valid allow login else throw unauthorized
-  if (checkIfValid) {
-    res.status(200);
-    return res.json(userList);
-  } else {
-    res.status(401);
-    return res.json({ message: "Check your credentials!" });
-  }
-});
-
-app.all("*", (req, res) => {
-  res.status(404);
-  res.sendFile(path.join(__dirname, "views", "404.html"));
-});
-
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
