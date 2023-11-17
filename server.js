@@ -3,8 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 
+const verifyJWT = require('./middleware/verifyJWT')
 const { logger } = require("./middleware/logEvents");
 const { corsOptions } = require("./config/corsOptions");
+
 
 const app = express();
 
@@ -67,8 +69,12 @@ app.get("/", (req, res) => {
 
 app.use("/register", require("./routes/register"));
 app.use("/login", require("./routes/auth"));
+app.use("/refresh", require("./routes/refresh"));
 
+// I need to validate is the requester holds the proper token
+app.use(verifyJWT);
 app.use("/users", require("./routes/api/user"));
+app.use('/products', require("./routes/api/products"))
 
 app.all("*", (req, res) => {
   res.status(404);
